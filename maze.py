@@ -6,9 +6,9 @@ class Maze(object):
 
 	def __init__(self, origin):
 		self.nodes = []
-		self.maxNodes = 80
+		self.maxNodes = 40
 		self.maxRange = 300
-		self.scatter = 20		
+		self.scatter = 20
 		self.origin = origin
 		self.start = TunnelNode(self)
 		self.nodes.append(self.start)
@@ -26,6 +26,7 @@ class Maze(object):
 				
 			if done:
 				self.end = choice(self.nodes[1:])
+		
 	
 	def draw(self, surface):
 		for node in self.nodes:
@@ -40,6 +41,13 @@ class Maze(object):
 	def spawnNode(self, builder):
 	
 		newNode = TunnelNode(self, builder)
+		for node in self.nodes:
+			while(node.nodeOverlap(newNode, 5)):
+				newNode.size -= 1
+				if newNode.size < 6:
+					builder.parent.remove(builder)
+					return
+		
 		self.nodes.append(newNode)
 		return newNode
 
@@ -58,6 +66,13 @@ class Maze(object):
 				
 		return False
 		
+	def hasIntersect(self, tunneler):
+		for node in self.nodes:
+			for t in node:
+				if t is tunneler: continue
+				if t.intersect(tunneler): return True
+		return False
+		
 	def inRange(self, position):
 	
 			if len(self.nodes) == 0:
@@ -67,7 +82,7 @@ class Maze(object):
 			yrel = abs(self.start.position.y - position.y)
 		
 			dist = sqrt(xrel ** 2 + yrel ** 2)
-						
+
 			return dist < self.maxRange
 			
 	def full(self):

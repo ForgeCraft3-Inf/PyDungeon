@@ -22,7 +22,7 @@ class TunnelNode(object):
 			self.position = self.builder.position.copy()
 		
 		if self.maze.inRange(self.position):
-			self.spawnTunnelers()		
+			self.spawnTunnelers()
 		
 	def spawnTunnelers(self):
 	
@@ -33,15 +33,17 @@ class TunnelNode(object):
 			
 		entryDir = Cardinal.reverse(dir)
 				
+		toSkip = choice(Cardinal.DIRECTIONS)
+				
 		for dir in Cardinal.DIRECTIONS:
 
 			if dir == entryDir:
 				continue
+				
+			if dir == toSkip:
+				continue
 			
-			if len(self.maze.nodes) == 0:
-				self.tunnelers.append(Tunneler(self.maze, self, dir))
-			elif randint(0, 1) == 0:
-				self.tunnelers.append(Tunneler(self.maze, self, dir))
+			self.tunnelers.append(Tunneler(self.maze, self, dir))
 		
 	def update(self):
 	
@@ -72,10 +74,23 @@ class TunnelNode(object):
 		if not abs(pos.y - self.position.y) + buffer < self.size / 2: return False
 		return True
 
-	def remove(self, tunneler):
-		self.tunnelers.remove(tunneler)
-
-
+	def nodeOverlap(self, node, buffer=0):
 		
+		distX = abs(node.position.x - self.position.x)
+		minDist = self.size/2 + node.size/2 + buffer
+		if not (distX < minDist): return False
+		
+		distY = abs(node.position.y - self.position.y)
+		if not (distY < minDist): return False
+		
+		return True
+		
+	def remove(self, tunneler):
+		print self.position.x, self.position.y
+		if tunneler in self.tunnelers:
+			self.tunnelers.remove(tunneler)
+
+	def __iter__(self):
+		return iter(self.tunnelers)
 		
 	

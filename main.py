@@ -6,6 +6,8 @@ from maze import Maze
 from pygame.locals import *
 from coord import Coord
 
+import time
+
 pygame.init()
 
 class Main(object):

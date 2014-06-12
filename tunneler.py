@@ -47,8 +47,12 @@ class Tunneler(object):
 			
 		self.tunnel.append(self.position.copy())
 	
-	def advance(self):	
+	def advance(self):
 		self.position.add(self.direction, 1)
+		if self.maze.hasIntersect(self):
+			self.parent.remove(self)
+			
+		
 
 	def isDone(self):
 		
@@ -64,5 +68,50 @@ class Tunneler(object):
 			rect = (pos, (3, 3))
 			pygame.draw.rect(surface, (0, 0, 0), rect)
 
+	def intersect(self, tunneler):
+	
+		if tunneler is self: return False
 		
+		if tunneler.parent is self.end: return False
+		
+		if tunneler.parent is self.parent: return False
+	
+		if not Cardinal.isOrthogonal(self.direction, tunneler.direction): return False
+		
+		if self.direction in [Cardinal.NORTH, Cardinal.SOUTH]:
+		
+			if self.direction == Cardinal.NORTH:
+				north = self.position.y
+				south = self.parent.position.y
+			else:
+				south = self.position.y
+				north = self.parent.position.y
+
+		
+			if tunneler.position.y < south: return False
+			if tunneler.position.y > north: return False
+			
+			if tunneler.position.x != self.position.x: return False
+			
+		if self.direction in [Cardinal.EAST, Cardinal.WEST]:
+		
+			if self.direction == Cardinal.EAST:
+				east = self.position.x
+				west = self.parent.position.x
+				
+			else:
+				west = self.position.x
+				east = self.parent.position.x
+				
+				
+			if tunneler.position.x < west: return False
+			if tunneler.position.x > east: return False
+			
+			if tunneler.position.y != self.position.y: return False
+			
+		return True
+		
+			
+	def __iter__(self):
+		return iter(self.tunnel)
 		
