@@ -6,8 +6,8 @@ class Maze(object):
 
 	def __init__(self, origin):
 		self.nodes = []
-		self.maxNodes = 40
-		self.maxRange = 300
+		self.maxNodes = 200
+		self.maxRange = 400
 		self.scatter = 20
 		self.origin = origin
 		self.start = TunnelNode(self)

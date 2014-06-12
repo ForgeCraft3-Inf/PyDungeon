@@ -86,10 +86,9 @@ class Tunneler(object):
 			else:
 				south = self.position.y
 				north = self.parent.position.y
-
-		
-			if tunneler.position.y < south: return False
-			if tunneler.position.y > north: return False
+			
+			if tunneler.position.y > south: return False
+			if tunneler.position.y < north: return False
 			
 			if tunneler.position.x != self.position.x: return False
 			
@@ -98,11 +97,9 @@ class Tunneler(object):
 			if self.direction == Cardinal.EAST:
 				east = self.position.x
 				west = self.parent.position.x
-				
 			else:
 				west = self.position.x
 				east = self.parent.position.x
-				
 				
 			if tunneler.position.x < west: return False
 			if tunneler.position.x > east: return False

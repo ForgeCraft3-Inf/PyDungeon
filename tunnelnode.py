@@ -86,7 +86,6 @@ class TunnelNode(object):
 		return True
 		
 	def remove(self, tunneler):
-		print self.position.x, self.position.y
 		if tunneler in self.tunnelers:
 			self.tunnelers.remove(tunneler)
 

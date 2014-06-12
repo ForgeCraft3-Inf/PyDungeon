@@ -10,11 +10,13 @@ import time
 
 pygame.init()
 
+
+
 class Main(object):
 
 
 	def __init__(self):
-		size = 500
+		size = 1000
 		self.surface = pygame.display.set_mode((size, size))
 		mazeOrigin = Coord(size/2, size/2)
 		self.maze = Maze(mazeOrigin.copy())
@@ -40,7 +42,22 @@ class Main(object):
 				   
 					if(e.key == K_r):
 						self.maze = Maze(Coord(size/2, size/2))
+						
+					if(e.key == K_PRINT):
+						Main.printscreen(self.surface)
 			
-			
+	@staticmethod
+	def printscreen(surface):
+		date = time.gmtime() 
+		fileName =	"screenshot_" + \
+				str(date[0]) + '-' + \
+				str(date[1]) + '-' + \
+				str(date[2]) + '-' + \
+				str(date[3]-8) + '-' + \
+				str(date[4]) + '-' + \
+				str(date[5]) + \
+				'.jpg'
+
+		pygame.image.save(surface, fileName)
 			
 Main()
