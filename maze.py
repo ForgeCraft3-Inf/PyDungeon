@@ -6,8 +6,8 @@ class Maze(object):
 
 	def __init__(self, origin):
 		self.nodes = []
-		self.maxNodes = 20
-		self.maxRange = 200
+		self.maxNodes = 80
+		self.maxRange = 300
 		self.scatter = 20		
 		self.origin = origin
 		self.start = TunnelNode(self)
@@ -41,6 +41,7 @@ class Maze(object):
 	
 		newNode = TunnelNode(self, builder)
 		self.nodes.append(newNode)
+		return newNode
 
 	
 	
@@ -73,4 +74,5 @@ class Maze(object):
 		return len(self.nodes) >= self.maxNodes
 				
 				
-		
+	def __iter__(self):
+		return iter(self.nodes)

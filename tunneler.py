@@ -6,22 +6,23 @@ class Tunneler(object):
 
 	MIN_LENGTH = 20
 
-	def __init__(self, maze, origin, direction):
+	def __init__(self, maze, node, direction):
 
 		
-	
+		self.parent = node
 		self.maze = maze
-		
 		self.tunnel = []
-		
 		self.direction = direction
-		self.position = origin.copy()
+		self.position = node.position.copy()
 		self.done = False
+		self.end = None
 
 		
 	def update(self):
 	
 		if self.maze.full():
+			if self.end is None:
+				self.parent.remove(self)
 			return
 
 		if self.done:
@@ -31,10 +32,18 @@ class Tunneler(object):
 			self.advance()
 		else:
 			if len(self.tunnel) > Tunneler.MIN_LENGTH and randint(0, 5) == 0:
-				self.maze.spawnNode(self)
+				self.end = self.maze.spawnNode(self)
 				self.done = True
 			else:
 				self.advance()
+		
+		for node in self.maze:
+			if self.done: break
+		
+			if node is self.parent: continue
+		
+			if node.overlap(self.position, 3):
+				self.parent.remove(self)
 			
 		self.tunnel.append(self.position.copy())
 	

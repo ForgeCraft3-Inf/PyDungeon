@@ -39,9 +39,9 @@ class TunnelNode(object):
 				continue
 			
 			if len(self.maze.nodes) == 0:
-				self.tunnelers.append(Tunneler(self.maze, self.position, dir))
+				self.tunnelers.append(Tunneler(self.maze, self, dir))
 			elif randint(0, 1) == 0:
-				self.tunnelers.append(Tunneler(self.maze, self.position, dir))
+				self.tunnelers.append(Tunneler(self.maze, self, dir))
 		
 	def update(self):
 	
@@ -66,8 +66,14 @@ class TunnelNode(object):
 		pygame.draw.rect(surface, color, rect)
 		
 
+	def overlap(self, pos, buffer=0):
 		
+		if not abs(pos.x - self.position.x) + buffer < self.size / 2: return False
+		if not abs(pos.y - self.position.y) + buffer < self.size / 2: return False
+		return True
 
+	def remove(self, tunneler):
+		self.tunnelers.remove(tunneler)
 
 
 		
