@@ -1,19 +1,23 @@
-from cardinals import cardinals
+from cardinals import Cardinal
 from random import randint
 import pygame
 
 class Tunneler(object):
 
+	MIN_LENGTH = 20
+
 	def __init__(self, maze, origin, direction):
+
 		
+	
 		self.maze = maze
 		
 		self.tunnel = []
 		
 		self.direction = direction
-		self.position = origin
+		self.position = origin.copy()
 		self.done = False
-		self.extend = 20
+
 		
 	def update(self):
 	
@@ -26,19 +30,16 @@ class Tunneler(object):
 		if(self.maze.hasNearbyNode(self.position)):
 			self.advance()
 		else:
-			if randint(0, self.extend) == 0:	
+			if len(self.tunnel) > Tunneler.MIN_LENGTH and randint(0, 5) == 0:
 				self.maze.spawnNode(self)
 				self.done = True
 			else:
 				self.advance()
-				self.extend -= 1
 			
-		self.tunnel.append(self.position)
+		self.tunnel.append(self.position.copy())
 	
 	def advance(self):	
-		newX = self.position[0] + self.direction[0]
-		newY = self.position[1] + self.direction[1]
-		self.position = (newX, newY)
+		self.position.add(self.direction, 1)
 
 	def isDone(self):
 		
@@ -50,7 +51,7 @@ class Tunneler(object):
 	def draw(self, surface):
 	
 		for point in self.tunnel:
-			pos = (point[0] - 1, point[1] - 1)
+			pos = (point.x - 1, point.y - 1)
 			rect = (pos, (3, 3))
 			pygame.draw.rect(surface, (0, 0, 0), rect)
 

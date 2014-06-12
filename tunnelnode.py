@@ -1,4 +1,4 @@
-from cardinals import cardinals
+from cardinals import Cardinal
 from random import randint
 from random import choice
 from random import shuffle
@@ -13,12 +13,13 @@ class TunnelNode(object):
 		self.maze = maze
 		self.builder = builder
 		self.tunnelers = []
+		self.size = 6 + randint(0, 20)
 		
 		
 		if builder is None:
-			self.position = maze.origin
+			self.position = maze.origin.copy()
 		else:
-			self.position = self.builder.position
+			self.position = self.builder.position.copy()
 		
 		if self.maze.inRange(self.position):
 			self.spawnTunnelers()		
@@ -26,15 +27,13 @@ class TunnelNode(object):
 	def spawnTunnelers(self):
 	
 		if self.builder is None:
-			dir = choice(cardinals.values())
+			dir = choice(Cardinal.DIRECTIONS)
 		else:
 			dir = self.builder.direction
 			
-		entryDir = (dir[0] * -1, dir[1] * -1)
-	
-		dirs = cardinals.values()
+		entryDir = Cardinal.reverse(dir)
 				
-		for dir in dirs:
+		for dir in Cardinal.DIRECTIONS:
 
 			if dir == entryDir:
 				continue
@@ -62,8 +61,8 @@ class TunnelNode(object):
 		for tunneler in self.tunnelers:
 			tunneler.draw(surface)
 	
-		pos = (self.position[0] - 5, self.position[1] - 5)
-		rect = (pos, (10, 10))
+		pos = (self.position.x - self.size/2, self.position.y - self.size/2)
+		rect = (pos, (self.size, self.size))
 		pygame.draw.rect(surface, color, rect)
 		
 

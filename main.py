@@ -4,6 +4,7 @@ import pygame
 from maze import Maze
 
 from pygame.locals import *
+from coord import Coord
 
 pygame.init()
 
@@ -11,10 +12,10 @@ class Main(object):
 
 
 	def __init__(self):
-		size = (500, 500)
-		self.surface = pygame.display.set_mode(size)
-		mazeOrigin = (250, 250)		
-		self.maze = Maze(mazeOrigin)
+		size = 500
+		self.surface = pygame.display.set_mode((size, size))
+		mazeOrigin = Coord(size/2, size/2)
+		self.maze = Maze(mazeOrigin.copy())
 
 		done = False
 		
@@ -36,7 +37,7 @@ class Main(object):
 						done = True
 				   
 					if(e.key == K_r):
-						self.maze = Maze(mazeOrigin)
+						self.maze = Maze(Coord(size/2, size/2))
 			
 			
 			

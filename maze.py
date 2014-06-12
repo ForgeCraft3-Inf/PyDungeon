@@ -7,7 +7,7 @@ class Maze(object):
 	def __init__(self, origin):
 		self.nodes = []
 		self.maxNodes = 20
-		self.maxRange = 40
+		self.maxRange = 200
 		self.scatter = 20		
 		self.origin = origin
 		self.start = TunnelNode(self)
@@ -47,8 +47,8 @@ class Maze(object):
 	def hasNearbyNode(self, position):
 	
 		for node in self.nodes:
-			xrel = abs(node.position[0] - position[0])
-			yrel = abs(node.position[1] - position[1])
+			xrel = abs(node.position.x - position.x)
+			yrel = abs(node.position.y - position.y)
 		
 			dist = sqrt(xrel ** 2 + yrel ** 2)
 				
@@ -62,8 +62,8 @@ class Maze(object):
 			if len(self.nodes) == 0:
 				return True
 	
-			xrel = abs(self.start.position[0] - position[0])
-			yrel = abs(self.start.position[1] - position[1])
+			xrel = abs(self.start.position.x - position.x)
+			yrel = abs(self.start.position.y - position.y)
 		
 			dist = sqrt(xrel ** 2 + yrel ** 2)
 						
